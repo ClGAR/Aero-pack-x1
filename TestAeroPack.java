@@ -1,5 +1,7 @@
+import java.util.Scanner;
+
 /**
- * AeroPack X1 Tester / Driver Program
+ * AeroPack X1 Interactive Driver Program
  *
  * @author Roger Alfonso A. Mancera
  * @course DSA_A223
@@ -8,61 +10,148 @@ public class TestAeroPack {
 
     public static void main(String[] args) {
 
-        // Roger Alfonso A. Mancera - DSA_A223
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("==================================");
+        System.out.println("       AEROPACK X1 SETUP");
+        System.out.println("==================================");
+
+        System.out.print("Enter owner name: ");
+        String owner = input.nextLine();
+
+        System.out.print("Enter AeroPack color: ");
+        String color = input.nextLine();
+
+        System.out.print("Enter capacity in kg: ");
+        float capacity = Float.parseFloat(input.nextLine());
+
+        System.out.print("Create biometric ID: ");
+        String biometricID = input.nextLine();
+
         AeroPack bag = new AeroPack(
-                "Roger Alfonso A. Mancera",
-                "Quantum Black",
-                20.0f,
-                "RAM-2026"
+                owner,
+                color,
+                capacity,
+                biometricID
         );
 
-        System.out.println("=== AEROPACK X1 FUTURISTIC OBJECT SIMULATION ===");
+        int choice;
 
-        // Initial information
-        bag.showInfo();
+        do {
 
-        // Biometric security test
-        System.out.println("\n--- BIOMETRIC SECURITY TEST ---");
-        bag.biometricUnlock("WRONG-ID");
-        bag.biometricUnlock("RAM-2026");
+            System.out.println("\n==================================");
+            System.out.println("        AEROPACK X1 MENU");
+            System.out.println("==================================");
+            System.out.println("1. Show AeroPack Information");
+            System.out.println("2. Biometric Unlock");
+            System.out.println("3. Add Item");
+            System.out.println("4. Remove Item");
+            System.out.println("5. AI Item Locator");
+            System.out.println("6. Activate Anti-Gravity");
+            System.out.println("7. Deactivate Anti-Gravity");
+            System.out.println("8. Solar Charge");
+            System.out.println("9. Lock AeroPack");
+            System.out.println("0. Exit");
+            System.out.println("==================================");
 
-        // Add items
-        System.out.println("\n--- ADDING ITEMS ---");
-        bag.addItem("Laptop", 3.0f);
-        bag.addItem("Power Bank", 1.0f);
-        bag.addItem("Notebook", 0.5f);
-        bag.addItem("Water Bottle", 1.5f);
+            System.out.print("Enter choice: ");
+            choice = Integer.parseInt(input.nextLine());
 
-        bag.showInfo();
+            switch (choice) {
 
-        // AI item locator
-        System.out.println("\n--- AI ITEM LOCATOR ---");
-        bag.locateItem("Laptop");
-        bag.locateItem("Headphones");
+                case 1:
+                    bag.showInfo();
+                    break;
 
-        // Anti-gravity test
-        System.out.println("\n--- ANTI-GRAVITY TEST ---");
-        bag.activateAntiGravity();
+                case 2:
+                    System.out.print("Enter biometric ID: ");
+                    String scan = input.nextLine();
 
-        System.out.printf("Actual Weight: %.2f kg%n", bag.getCurrentWeight());
-        System.out.printf("Weight Felt by User: %.2f kg%n", bag.getEffectiveWeight());
+                    bag.biometricUnlock(scan);
+                    break;
 
-        // Solar charging
-        System.out.println("\n--- SOLAR CHARGING TEST ---");
-        bag.solarCharge(60);
+                case 3:
+                    System.out.print("Enter item name: ");
+                    String item = input.nextLine();
 
-        // Remove an item
-        System.out.println("\n--- REMOVING ITEM ---");
-        bag.removeItem("Notebook", 0.5f);
+                    System.out.print("Enter item weight (kg): ");
+                    float weight =
+                            Float.parseFloat(input.nextLine());
 
-        // Lock backpack
-        System.out.println("\n--- SECURITY TEST ---");
-        bag.lock();
-        bag.removeItem("Laptop", 3.0f);
+                    bag.addItem(item, weight);
+                    break;
 
-        // Final information
-        bag.showInfo();
+                case 4:
+                    System.out.print("Enter item name to remove: ");
+                    String removeItem = input.nextLine();
 
-        System.out.println("\n=== SIMULATION COMPLETE ===");
+                    System.out.print("Enter item weight (kg): ");
+                    float removeWeight =
+                            Float.parseFloat(input.nextLine());
+
+                    bag.removeItem(
+                            removeItem,
+                            removeWeight
+                    );
+                    break;
+
+                case 5:
+                    System.out.print("Enter item to locate: ");
+                    String searchItem = input.nextLine();
+
+                    bag.locateItem(searchItem);
+                    break;
+
+                case 6:
+                    bag.activateAntiGravity();
+
+                    System.out.printf(
+                            "Actual Weight: %.2f kg%n",
+                            bag.getCurrentWeight()
+                    );
+
+                    System.out.printf(
+                            "Weight Felt: %.2f kg%n",
+                            bag.getEffectiveWeight()
+                    );
+                    break;
+
+                case 7:
+                    bag.deactivateAntiGravity();
+                    break;
+
+                case 8:
+                    System.out.print(
+                            "Enter charging time in minutes: "
+                    );
+
+                    int minutes =
+                            Integer.parseInt(input.nextLine());
+
+                    bag.solarCharge(minutes);
+                    break;
+
+                case 9:
+                    bag.lock();
+                    break;
+
+                case 0:
+                    System.out.println(
+                            "\nAeroPack X1 shutting down..."
+                    );
+                    System.out.println(
+                            "Thank you for using AeroPack X1!"
+                    );
+                    break;
+
+                default:
+                    System.out.println(
+                            "Invalid choice. Please try again."
+                    );
+            }
+
+        } while (choice != 0);
+
+        input.close();
     }
 }
